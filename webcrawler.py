@@ -1,6 +1,14 @@
 #This procedure will look for the next link in the page, if it finds one it
 #returns the next link or else returns None and 0
 
+import urllib
+def get_page(url):
+    try :
+        return urllib.urlopen(url).read()
+    except :
+        return ""
+
+
 
 def get_next_target(page):
     start_link = page.find('<a href=')
@@ -14,12 +22,15 @@ def get_next_target(page):
 
 #This is the starting of the web crawler code.
 
-page = ' <a href="http://chat.stackexchange.com"     data-gps-track="site_switcher.click({ item_type:6 })" >chat</a> '
-
-url , endpos = get_next_target(page)
-
-print url
-print endpos
+page = get_page('http://xkcd.com/353')
+while True :
+    url , endpos = get_next_target(page)
+    if url:
+        print url
+        page = page[endpos:]
+        #print endpos
+    else:
+        break
 
 
 
